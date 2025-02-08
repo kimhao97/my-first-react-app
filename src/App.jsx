@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 const Card = ({title}) => {
+  const [count, setCount] = useState(0);
   const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
@@ -11,8 +12,8 @@ const Card = ({title}) => {
   }, [hasLiked]); // Chỉ chạy khi hasLiked thay đổi
 
   return (
-    <div className='card'>
-      <h2>{title}</h2>
+    <div className='card' onClick={() => setCount(count + 1)}>
+      <h2>{title} <br/> {count || null} </h2>
       
       <button onClick={() => setHasLiked(!hasLiked)}>
         {hasLiked ? "🩷" : "🤍"}
@@ -26,9 +27,9 @@ function App() {
   function newFunction() {
     return <div className='card-container'>
       <h2>Card</h2>
-      <Card title="Component 1" />
-      <Card title="Component 2" />
-      <Card title="Component 3" />
+      <Card title="Box A" />
+      <Card title="Box B" />
+      <Card title="Box C" />
     </div>
   }
 }

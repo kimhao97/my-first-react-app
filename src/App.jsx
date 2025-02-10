@@ -1,6 +1,7 @@
 import Search from './components/Search'
 import { useState, useEffect } from 'react';
 import Spinner from './components/Spinner';
+import MovieCard from './components/MovieCard';
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -31,14 +32,13 @@ const App = () => {
       }
 
       const data = await response.json();
-
+      console.log(data);
       if (data.Response === 'false') {
         setErrorMessage(data.errorMessage);
         setMovieList([])
         return
       } 
       setMovieList(data.results || []);
-      console.log(moveList);
     } catch (error) {
       console.error('Error fetching movies: ', error);
       setErrorMessage(error);
@@ -69,7 +69,7 @@ const App = () => {
           ) : (
             <ul>
               {moveList.map((movie) => (
-                <p key={movie.id} className="text-white">{movie.title}</p>
+                <MovieCard key={movie.id} movie={movie}/>
               ))}
             </ul>
           )}

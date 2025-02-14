@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Spinner from '../components/Spinner';
+import { FaStar } from "react-icons/fa";
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 const API_OPTIONS = {
@@ -40,20 +41,36 @@ const MovieDetail = () => {
     fetchMovie();
   }, [id]);
 
+  if (!movie) return <div className="text-white">Loading...</div>;
+
   return (
-    isLoading ? (
-      <p className="text-white">Loading ...</p>
-    ) : movie ? (
-      <div className="content">
-        <h1>{movie.title}</h1>
-        <img src={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : `/no-movie.png`}  
-          alt={movie.title || 'No title'}/>
-        <p className="text-white">{movie.overview || "No overview available."}</p>
-        <p className="text-white">Release Date: {movie.release_date || "No release date available."}</p>
+    <div className="bg-gray-900 text-white p-6 rounded-xl max-w-4xl mx-auto mt-10 shadow-lg">
+      <h1 className="text-3xl font-bold">{movie.title}</h1>
+      <div className="flex items-center mt-2">
+        <span className="text-yellow-400 flex items-center">
+          <FaStar className="mr-1" /> {movie.vote_average.toFixed(1)}
+        </span>
+        <span className="ml-4 text-gray-400">{movie.runtime} mins</span>
       </div>
-    ) : (
-      <h2>Movie not found</h2>
-    )
+      <div className="mt-4 flex gap-4">
+        <img src={`${IMAGE_BASE_URL}${movie.poster_path}`} alt={movie.title} className="w-48 rounded-lg shadow-md" />
+        <p className="text-gray-300">{movie.overview}</p>
+      </div>
+      <div className="mt-4">
+        <h3 className="text-lg font-semibold">Genres:</h3>
+        <div className="flex gap-2 mt-2">
+          {movie.genres.map((genre) => (
+            <span key={genre.id} className="bg-blue-600 px-3 py-1 rounded-full text-sm">
+              {genre.name}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="mt-4">
+        <h3 className="text-lg font-semibold">Release Date:</h3>
+        <p className="text-gray-300">{movie.release_date}</p>
+      </div>
+    </div>
   );
 };
 

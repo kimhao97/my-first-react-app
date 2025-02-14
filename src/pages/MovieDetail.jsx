@@ -14,6 +14,10 @@ const API_OPTIONS = {
   }
 };
 
+const Shimmer = ({ className }) => (
+  <div className={`bg-gray-700 animate-pulse rounded ${className}`} />
+);
+
 const MovieDetail = () => {
   const { id } = useParams(); 
   const [movie, setMovie] = useState();
@@ -41,7 +45,35 @@ const MovieDetail = () => {
     fetchMovie();
   }, [id]);
 
-  if (!movie) return <div className="text-white">Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="bg-gray-900 p-6 rounded-xl max-w-4xl mx-auto mt-10 shadow-lg text-white">
+        <Shimmer className="h-8 w-3/4 mb-4" />
+        <div className="flex items-center mt-2">
+          <Shimmer className="h-6 w-20" />
+          <Shimmer className="h-6 w-24 ml-4" />
+        </div>
+        <div className="mt-4 flex gap-4">
+          <Shimmer className="w-48 h-72 rounded-lg shadow-md" />
+          <div className="flex-1">
+            <Shimmer className="h-6 w-full mb-2" />
+            <Shimmer className="h-6 w-5/6 mb-2" />
+            <Shimmer className="h-6 w-4/6 mb-2" />
+          </div>
+        </div>
+        <div className="mt-4">
+          <Shimmer className="h-6 w-32 mb-2" />
+          <div className="flex gap-2">
+            <Shimmer className="h-6 w-16 rounded-full" />
+            <Shimmer className="h-6 w-16 rounded-full" />
+            <Shimmer className="h-6 w-16 rounded-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!movie) return <div className="text-white">No movie found</div>;
 
   return (
     <div className="bg-gray-900 text-white p-6 rounded-xl max-w-4xl mx-auto mt-10 shadow-lg">
